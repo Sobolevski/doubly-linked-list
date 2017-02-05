@@ -3,34 +3,34 @@ const Node = require('./node');
 class LinkedList {
     constructor() {
         this.length = 0;
-        this.forward = null;
-        this.backwards = null;
+        this._forward = null;
+        this._backwards = null;
     }
 
     append(data) {
         if(this.length == 0) {
             let temp = new Node(data);
-            this.forward = this.backwards = temp; 
+            this._forward = this._backwards = temp; 
         } else {
-            let temp = new Node(data,this.backwards,null);
-            this.backwards.next = temp;
-            this.backwards = temp;
+            let temp = new Node(data,this._backwards,null);
+            this._backwards.next = temp;
+            this._backwards = temp;
         }
         this.length++;
         return this;
     }
 
     head() {
-        return this.forward ? this.forward.data : null;
+        return this._forward ? this._forward.data : null;
     }
 
     tail() {
-        return this.backwards ? this.backwards.data : null;
+        return this._backwards ? this._backwards.data : null;
     }
 
     at(index) {
         if(index > -1 && index < this.length){
-            let current = this.forward;
+            let current = this._forward;
             for (let i = 0; i < index; i++) {
                 current = current.next;
             }
@@ -47,7 +47,7 @@ class LinkedList {
 
         }*/
         else {
-            let current = this.forward;
+            let current = this._forward;
             while (current && index-- > 0) {
                 current = current.next;
             }
@@ -61,7 +61,7 @@ class LinkedList {
             if (current.prev) {
                 current.prev.next = temp;
             } else {
-                this.forward = temp;
+                this._forward = temp;
             }
                 current.prev = temp;
             this.length++;
@@ -75,14 +75,14 @@ class LinkedList {
     }
 
     clear() {
-        this.forward = this.backwards = null;
+        this._forward = this._backwards = null;
         this.length = 0;
         return this;
     }
 
     deleteAt(index) {
         if (index === 0 && this.length === 1) return this.clear();
-        let current = this.forward;
+        let current = this._forward;
         while (current && index-- > 0) {
             current = current.next;
         }
@@ -91,11 +91,11 @@ class LinkedList {
             return this;
         }
         if (index === 0) {
-            this.forward = this.forward.next;
-            this.forward.prev = null;
+            this._forward = this._forward.next;
+            this._forward.prev = null;
         } else if (index === this.length-1) {
-            this.backwards = this.tail.prev;
-            this.backwards.next = null;  
+            this._backwards = this.tail.prev;
+            this._backwards.next = null;  
         } else {
             current.prev.next = current.next;
             current.next.prev = current.prev;
@@ -108,8 +108,8 @@ class LinkedList {
 
     reverse() {
         if(this.length == 1) return this;
-        let first = this.forward;
-        let last = this.backwards;
+        let first = this._forward;
+        let last = this._backwards;
 
         for (let i = 0; i*2 < this.length; i++) {
             let temp = first.data;
@@ -123,7 +123,7 @@ class LinkedList {
     }
 
     indexOf(data) {
-        let current = this.forward;
+        let current = this._forward;
         for (let i = 0; i < this.length; i++) {
             if (current.data == data) return i;
             current = current.next;
